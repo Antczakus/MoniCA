@@ -29,6 +29,14 @@ public class NewMeetingActivity extends AppCompatActivity {
     private String mailSubject;
     private String path;
 
+    private String deleteUntilComma(String s){
+       // s=s.substring(0,s.length()-1);
+        while(s.charAt(s.length()-1)!=','){
+            s=s.substring(0,s.length()-1);
+        }
+        return s;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,10 +49,16 @@ public class NewMeetingActivity extends AppCompatActivity {
         inputEmail.addTextChangedListener(new TextWatcher() {
 
             public void afterTextChanged(Editable s) {
-                if((inputEmail.getText().toString().length() - inputEmail.getText().toString().replace(",", "").length()) >=19 ) {
+                if((inputEmail.getText().toString().length() - inputEmail.getText().toString().replace(",", "").length()) >=20 ) {
                         Toast.makeText(getApplicationContext(), "Osiągnięto limit 20 e-maili", Toast.LENGTH_SHORT).show();
-                         inputEmail.setText(inputEmail.getText().toString().substring(0,inputEmail.length()-1));
-                         inputEmail.setSelection(inputEmail.length());
+                        if(inputEmail.getText().toString().charAt(inputEmail.length()-1)==','){
+                            inputEmail.setText(inputEmail.getText().toString().substring(0,inputEmail.length()-1));
+                            inputEmail.setSelection(inputEmail.length());
+
+                        }else {
+                            inputEmail.setText(deleteUntilComma(inputEmail.getText().toString()));
+                            inputEmail.setSelection(inputEmail.length());
+                        }
                 }
             }public void beforeTextChanged(CharSequence s, int start,
                                            int count, int after) {
