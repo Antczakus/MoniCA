@@ -5,6 +5,8 @@ import android.os.Environment;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
@@ -35,6 +37,23 @@ public class NewMeetingActivity extends AppCompatActivity {
         meetingName = findViewById(R.id.meetingNameInput);
         inputEmail = findViewById(R.id.emailInput);
         recorderName = getIntent().getExtras().getString("recorderName");
+
+        inputEmail.addTextChangedListener(new TextWatcher() {
+
+            public void afterTextChanged(Editable s) {
+                if((inputEmail.getText().toString().length() - inputEmail.getText().toString().replace(",", "").length()) >=19 ) {
+                        Toast.makeText(getApplicationContext(), "Osiągnięto limit 20 e-maili", Toast.LENGTH_SHORT).show();
+                         inputEmail.setText(inputEmail.getText().toString().substring(0,inputEmail.length()-1));
+                         inputEmail.setSelection(inputEmail.length());
+                }
+            }public void beforeTextChanged(CharSequence s, int start,
+                                           int count, int after) {
+            }
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+
+            }
+        });
 
         confirmButton.setOnClickListener((view) -> {
                     path = Environment.getExternalStorageDirectory().getPath() + "/" + recorderName;
